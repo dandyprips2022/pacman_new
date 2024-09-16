@@ -15,6 +15,18 @@
                 role: "Admin"
             }
         });
+            // Create a custom span using Splunk RUM's tracer
+            const tracer = SplunkRum.provider.getTracer('appModuleLoader');
+            const span = tracer.startSpan('test.module.load', {
+            attributes: {
+                'workflow.name': 'test.workflow'
+            }
+            });
+
+            setTimeout(() => {
+                // End the span after the operation completes
+                span.end();
+            }, 1000);
     </script>
 
     <script src="https://cdn.signalfx.com/o11y-gdi-rum/v0.19.1/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>
@@ -298,22 +310,6 @@
 </div>
 
     <script src="pacman-canvas.js" type="text/javascript"></script>
-
-    <script type="module">
-        import { trace } from '@opentelemetry/api';
-        const tracer = trace.getTracer('appModuleLoader');
-        const span = tracer.startSpan('test.module.load', {
-            attributes: {
-                'workflow.name': 'test.workflow'
-            }
-        });
-
-        // Simulate some operation (like a delay or processing)
-        setTimeout(() => {
-            // End the span after some time
-            span.end();
-        }, 1000);
-    </script>
     
 </body>
 </html>

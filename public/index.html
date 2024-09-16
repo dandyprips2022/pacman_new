@@ -11,10 +11,9 @@
             applicationName: "pacman-ui",
             deploymentEnvironment: "lab",
             globalAttributes: {
-                instrumentedBy: "Priyanshu"
+                instrumentedBy: "Priyanshu",
                 role: "Admin"
             }
-            instrumentations: { errors: false }
         });
     </script>
 
@@ -37,6 +36,7 @@
             if (highScoreButton) {
                 // Add a click event listener
                 highScoreButton.addEventListener('click', function() {
+                    console.log('highscore button is clicked, hurray')
                     const span = trace.getTracer('menu-tracer').startSpan('highscore-button-click');
     
                     // Optionally, set attributes or add events to the span

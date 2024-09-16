@@ -3,7 +3,7 @@
 <!--<html lang="en">-->
 <html lang="en" manifest="cache.manifest">
 <head>
-    <script src="https://cdn.signalfx.com/o11y-gdi-rum/v0.19.1/splunk-otel-web.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web.js" crossorigin="anonymous"></script>
     <script>
         SplunkRum.init({
             realm: "eu0",
@@ -17,7 +17,7 @@
         });
             // Create a custom span using Splunk RUM's tracer
             const tracer = SplunkRum.provider.getTracer('appModuleLoader');
-            const span = tracer.startSpan('test.module.load', {
+            const span1 = tracer.startSpan('test.module.load', {
             attributes: {
                 'workflow.name': 'test.workflow'
             }
@@ -25,20 +25,20 @@
 
             setTimeout(() => {
                 // End the span after the operation completes
-                span.end();
+                span1.end();
             }, 50);
 
-            const span = trace.getTracer('searchbox').startSpan('search');
-            span.setAttribute('searchLength', '42');
+            const span2 = trace.getTracer('searchbox').startSpan('search');
+            span2.setAttribute('searchLength', '42');
             
             setTimeout(() => {
                 // End the span after the operation completes
-                span.end();
+                span2.end();
             }, 50);
         
     </script>
 
-    <script src="https://cdn.signalfx.com/o11y-gdi-rum/v0.19.1/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>
     <script>
         SplunkSessionRecorder.init({
           app: "pacman-ui",

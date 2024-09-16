@@ -27,15 +27,6 @@
                 // End the span after the operation completes
                 span1.end();
             }, 50);
-
-            const span2 = trace.getTracer('searchbox').startSpan('search');
-            span2.setAttribute('searchLength', '42');
-            
-            setTimeout(() => {
-                // End the span after the operation completes
-                span2.end();
-            }, 50);
-        
     </script>
 
     <script src="https://cdn.signalfx.com/o11y-gdi-rum/latest/splunk-otel-web-session-recorder.js" crossorigin="anonymous"></script>

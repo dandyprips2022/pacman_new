@@ -3,20 +3,17 @@
 /**
  * Module dependencies.
  */
+
 // Custom instrumentation start
-const { NodeTracerProvider } = require('@splunk/otel');
-const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/tracing');
+const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 
-// Create a provider for the OpenTelemetry SDK
 const provider = new NodeTracerProvider();
-
-// Set up a span processor
 provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-
-// Register the provider
 provider.register();
-
 // custom instrumentation end
+
 var app = require('../app');
 //var debug = require('debug')('pacman:server');
 var http = require('http');

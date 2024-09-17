@@ -45,7 +45,9 @@ router.post('/', urlencodedParser, function(req, res, next) {
     const tracer = trace.getTracer('default');
     
     // Start a new span for the POST request
-    const span = tracer.startSpan('POST /highscores');
+    const span = tracer.startSpan('Manually Instrumented POST /highscores');
+    span.setAttribute('instrumented.by', 'Priyanshu')
+    span.setAttribute('http.method', 'POST')
 
     try {
         console.log('[POST /highscores] body =', req.body,

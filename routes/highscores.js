@@ -60,12 +60,8 @@ router.post('/', urlencodedParser, function(req, res, next) {
 
         Database.getDb(req.app, function(err, db) {
             if (err) {
-                span.setStatus({ code: 2 }); // 2 = ERROR
+                span.setStatus({ code: 2 });
                 span.end();
-                SplunkRum.logError(err, {
-                    severity: 'error',
-                    details: err.message
-                });
                 return next(err);
             }
 

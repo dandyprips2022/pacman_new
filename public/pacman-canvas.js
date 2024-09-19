@@ -96,7 +96,14 @@ function geronimo() {
             },
             error: function(errorThrown) {
                  console.error("Caught error:", errorThrown);
-                 SplunkRum.error({ message: "Caught error", errorThrown });
+                 SplunkRum.error({
+                    message: "Caught error",
+                    error: {
+                        message: errorThrown.message,
+                        name: errorThrown.name,
+                        stack: errorThrown.stack
+                    }
+                });
             }
         });
     }

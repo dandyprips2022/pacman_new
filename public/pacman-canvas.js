@@ -95,7 +95,8 @@ function geronimo() {
                 $('#highscore-form').html('<span class="button" id="show-highscore">View Highscore List</span>');
             },
             error: function(errorThrown) {
-                console.log(errorThrown);
+                 console.error("Caught error:", errorThrown);
+                 SplunkRum.error({ message: "Caught error", errorThrown });
             }
         });
     }

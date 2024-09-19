@@ -62,9 +62,11 @@ router.post('/', urlencodedParser, function(req, res, next) {
             if (err) {
                 span.setStatus({ code: 2 }); // 2 = ERROR
                 span.end();
-                console.error('Unexpected error:', err);
-                // Throw an actual JavaScript error
-                return next(new Error('Failed to connect to the database.'));
+                SplunkRum.logError(err, {
+                    severity: 'error',
+                    details: err.message
+                });
+                return next(err);
             }
 
             // Insert high score with extra user data

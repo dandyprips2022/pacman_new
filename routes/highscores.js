@@ -62,7 +62,9 @@ router.post('/', urlencodedParser, function(req, res, next) {
             if (err) {
                 span.setStatus({ code: 2 }); // 2 = ERROR
                 span.end();
-                return next(err);
+                console.error('Unexpected error:', err);
+                // Throw an actual JavaScript error
+                return next(new Error('Failed to connect to the database.'));
             }
 
             // Insert high score with extra user data

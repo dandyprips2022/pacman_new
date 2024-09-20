@@ -8,10 +8,14 @@
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
+const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb');
 
 const provider = new NodeTracerProvider();
 provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 provider.register();
+
+const mongodbInstrumentation = new MongoDBInstrumentation();
+mongodbInstrumentation.enable();
 // custom instrumentation end
 
 var app = require('../app');

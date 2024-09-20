@@ -46,8 +46,8 @@ router.post('/', urlencodedParser, function(req, res, next) {
     
     // Start a new span for the POST request
     const span = tracer.startSpan('Manually Instrumented POST /highscores');
-    span.setAttribute('instrumented.by', 'Priyanshu'); 
-    span.setAttribute('http.method', 'POST'); 
+    span.setAttribute('instrumented.by', 'Priyanshu');
+    span.setAttribute('http.method', 'POST');
 
     try {
         console.log('[POST /highscores] body =', req.body,
@@ -60,21 +60,11 @@ router.post('/', urlencodedParser, function(req, res, next) {
 
         Database.getDb(req.app, function(err, db) {
             if (err) {
-                span.setStatus({ code: 2 }); 
-                span.recordException(err); 
-                span.end();
+                span.setStatus({ code: 2 }); // Mark span as error
+                span.recordException(err); // Record exception
+                span.end(); // End span
                 return next(err);
             }
-
-            // Start child span for MongoDB insert
-            const cSpan = tracer.startSpan('mongodb.insert', {
-                parent: span,
-                attributes: {
-                    'db.operation': 'insertOne',
-                    'db.name': 'highscore',
-                    'db.statement': 'INSERT INTO highscore'
-                }
-            });
 
             // Insert high score with extra user data
             db.collection('highscore').insertOne({
@@ -96,16 +86,11 @@ router.post('/', urlencodedParser, function(req, res, next) {
                 }, function(err, result) {
                     if (err) {
                         console.log(err);
-                        span.setStatus({ code: 2 }); // Mark span as error
-                        cSpan.setStatus({ code: 2 }); // Mark child span as error
+                        span.setStatus({ code: 2 });
                     } else {
                         console.log('Successfully inserted highscore');
-                        span.setStatus({ code: 1 }); // Mark as success
-                        cSpan.setStatus({ code: 1 }); // Mark child span as success
+                        span.setStatus({ code: 1 }); 
                     }
-
-                    // End child span
-                    cSpan.end();
 
                     // End the main span after the operation is complete
                     span.end();
@@ -121,12 +106,13 @@ router.post('/', urlencodedParser, function(req, res, next) {
                 });
         });
     } catch (error) {
-        span.setStatus({ code: 2 }); // Mark main span as error
-        span.recordException(error); // Record exception
-        span.end(); // End span
-        next(error); // Pass error to next middleware
+        span.setStatus({ code: 2 }); 
+        span.recordException(error); 
+        span.end(); 
+        next(error); 
     }
 });
+
 
 
 module.exports = router;
